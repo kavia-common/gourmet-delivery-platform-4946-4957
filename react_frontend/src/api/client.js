@@ -8,6 +8,65 @@ function buildHeaders(token) {
   return headers;
 }
 
+/**
+ * Normalize a restaurant object to the shape expected by the UI.
+ * - Map _id -> id
+ * - Ensure eta is a number or number-like string without "min"
+ * - Ensure rating is a number
+ */
+function normalizeRestaurant(raw) {
+  if (!raw || typeof raw !== 'object') return raw;
+  const id = raw.id || raw._id || raw.restaurantId || raw.slug || String(raw?.name || '');
+  // try to coerce eta to a plain number or "x-y" string as the UI prints "min" separately
+  let eta = raw.eta;
+  if (typeof eta === 'string' && eta.toLowerCase().includes('min')) {
+    eta = eta.replace(/min/ig, '').trim();
+  }
+  return {
+    ...raw,
+    id,
+    eta,
+    rating: typeof raw.rating === 'number' ? raw.rating : Number(raw.rating || 0)
+  };
+}
+
+/**
+ * Normalize a menu item:
+ * - Map _id -> id, menuItemId -> id
+ * - Ensure price is number
+ */
+function normalizeMenuItem(raw) {
+  if (!raw || typeof raw !== 'object') return raw;
+  const id = raw.id || raw._id || raw.menuItemId;
+  return {
+    ...raw,
+    id,
+    price: typeof raw.price === 'number' ? raw.price : Number(raw.price || 0)
+  };
+}
+
+/**
+ * Some backends return restaurant payload without embedded menu
+ * and expose it via /restaurants/:id/menu. This helper tries the
+ * main endpoint first, then fetches menu if missing.
+ */
+async function fetchRestaurantWithMenu(id, token) {
+  const { data, error } = await apiGet(`/restaurants/${id}`, token);
+  if (error || !data) return { data: null, error: error || 'Not found' };
+
+  let restaurant = normalizeRestaurant(data);
+  // if no menu array present, try to fetch it
+  if (!Array.isArray(restaurant.menu)) {
+    const menuRes = await apiGet(`/restaurants/${id}/menu`, token);
+    if (!menuRes.error && Array.isArray(menuRes.data)) {
+      restaurant = { ...restaurant, menu: menuRes.data.map(normalizeMenuItem) };
+    }
+  } else {
+    restaurant = { ...restaurant, menu: restaurant.menu.map(normalizeMenuItem) };
+  }
+  return { data: restaurant, error: null };
+}
+
 // PUBLIC_INTERFACE
 export async function apiGet(path, token) {
   /** Fetch JSON via GET; returns { data, error } */
@@ -50,10 +109,12 @@ export const Api = {
         { id: 'r3', name: 'Amber Spice Kitchen', cuisine: 'Indian', rating: 4.6, eta: '20-30', image: 'https://images.unsplash.com/photo-1544025162-8b5f0f5578d2?q=80&w=1200&auto=format&fit=crop' }
       ];
     }
-    return data;
+    // normalize list to ensure id instead of _id
+    return data.map(normalizeRestaurant);
   },
   async getRestaurant(id, token) {
-    const { data, error } = await apiGet(`/restaurants/${id}`, token);
+    // Try to fetch restaurant and ensure menu exists, with minimal coupling
+    const { data, error } = await fetchRestaurantWithMenu(id, token);
     if (error || !data) {
       return {
         id, name: 'Demo Restaurant', cuisine: 'Fusion', rating: 4.6, eta: '20-30',
@@ -76,7 +137,24 @@ export const Api = {
     return data;
   },
   async createOrder(order, token) {
-    const { data, error } = await apiPost('/orders', order, token);
+    // Try to map common order shape expected by backend: { restaurantId, items: [{menuItemId, quantity}] }
+    // If the caller passes UI cart shape, keep it as-is for compatibility (backend may accept flexible payload).
+    const mapped = (() => {
+      if (order && Array.isArray(order.items) && !order.items.find(i => i.menuItemId)) {
+        // map from {id, qty} to backend expected keys, if present
+        return {
+          ...order,
+          items: order.items.map(i => ({
+            menuItemId: i.menuItemId || i.id,
+            quantity: i.quantity || i.qty || 1,
+            instructions: i.instructions
+          }))
+        };
+      }
+      return order;
+    })();
+
+    const { data, error } = await apiPost('/orders', mapped, token);
     if (error) {
       // Mock success
       return { orderId: `demo-${Date.now()}`, status: 'received', etaMinutes: 30 };
