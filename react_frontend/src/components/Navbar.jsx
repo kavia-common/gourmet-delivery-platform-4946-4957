@@ -46,7 +46,11 @@ export default function Navbar() {
 
           <div className="nav-actions">
             <NavLink to="/" className="btn outline" aria-label="Browse restaurants">Browse</NavLink>
-            <button className="btn secondary" onClick={openCart} aria-label={`Open cart with ${count} items`}>
+            <button
+              className="btn secondary"
+              onClick={(e) => openCart(e.currentTarget)}
+              aria-label={`Open cart with ${count} items`}
+            >
               Cart • {count}
             </button>
 

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 // PUBLIC_INTERFACE
 export const CartContext = createContext(null);
@@ -11,9 +11,12 @@ export function useCart() {
 
 // PUBLIC_INTERFACE
 export function CartProvider({ children }) {
-  /** Provides cart operations: addItem, removeItem, updateQty, clear, totals */
+  /** Provides cart operations: addItem, removeItem, updateQty, clear, totals, open/close cart */
   const [items, setItems] = useState([]);
   const [isOpen, setOpen] = useState(false);
+
+  // Track last opener element to return focus when closing for a11y
+  const lastOpenerRef = useRef(null);
 
   // Load persisted cart
   useEffect(() => {
@@ -35,10 +38,35 @@ export function CartProvider({ children }) {
   const deliveryFee = items.length ? 4.99 : 0;
   const total = subtotal + deliveryFee;
 
+  // PUBLIC_INTERFACE
+  const openCart = (openerEl) => {
+    // remember the button that opened the cart if provided
+    if (openerEl instanceof HTMLElement) {
+      lastOpenerRef.current = openerEl;
+    } else {
+      lastOpenerRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    }
+    setOpen(true);
+  };
+
+  // PUBLIC_INTERFACE
+  const closeCart = () => {
+    setOpen(false);
+    // return focus to opener if available
+    if (lastOpenerRef.current) {
+      try { lastOpenerRef.current.focus(); } catch {}
+      lastOpenerRef.current = null;
+    }
+  };
+
   const value = useMemo(() => ({
-    items, isOpen, subtotal, deliveryFee, total,
-    openCart: () => setOpen(true),
-    closeCart: () => setOpen(false),
+    items,
+    isOpen,
+    subtotal,
+    deliveryFee,
+    total,
+    openCart,
+    closeCart,
     // PUBLIC_INTERFACE
     addItem: (item) => {
       setItems(prev => {

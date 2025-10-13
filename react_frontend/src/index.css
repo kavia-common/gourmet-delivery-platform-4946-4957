@@ -286,6 +286,33 @@ body {
   border-top: 1px solid var(--border);
 }
 
+/* Cart overlay to close on outside click */
+.cart-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(17,24,39,.5);
+  backdrop-filter: blur(2px);
+  z-index: 30;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Icon button variant for close */
+.btn.icon {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 6px 10px;
+  box-shadow: none;
+}
+.btn.icon:hover {
+  background: rgba(17,24,39,.04);
+}
+.btn.icon:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+}
+
 /* Modal base */
 .modal-backdrop {
   position: fixed;

@@ -20,3 +20,10 @@
   border-radius: var(--radius);
   background: #fff;
 }
+
+/* Ensure focus ring visible across theme for keyboard users */
+:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(37,99,235,.14);
+  border-radius: var(--radius-sm);
+}
