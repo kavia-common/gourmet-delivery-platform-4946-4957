@@ -286,6 +286,59 @@ body {
   border-top: 1px solid var(--border);
 }
 
+/* Slider-style close handle */
+.cart-slider-handle {
+  position: absolute;
+  left: -22px; /* slightly overlap outside the sidebar to suggest slide */
+  top: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;   /* min 40x40 target size */
+  height: 44px;
+  border-radius: 999px; /* pill/circular */
+  background: #ffffff;
+  color: var(--text);
+  border: 1px solid var(--border);
+  box-shadow: 0 6px 16px rgba(0,0,0,.08);
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
+  z-index: 2; /* above panel content */
+}
+.cart-slider-handle:hover {
+  background: rgba(37,99,235,.06);
+  border-color: rgba(37,99,235,.35);
+  box-shadow: 0 8px 20px rgba(37,99,235,.15);
+}
+.cart-slider-handle:active {
+  transform: translateY(0.5px) scale(0.98);
+}
+.cart-slider-handle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(37,99,235,.14);
+}
+
+/* small drag affordance (not functional drag, visual only) */
+.cart-slider-handle .handle-drag {
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  gap: 2px;
+}
+.cart-slider-handle .handle-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(17,24,39,.35);
+}
+.cart-slider-handle .handle-icon {
+  font-size: 22px;
+  line-height: 1;
+  margin-left: 4px;
+}
+
 /* Cart overlay to close on outside click */
 .cart-overlay {
   position: fixed;

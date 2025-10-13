@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useCallback } from 'react';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
 
@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
  * - Renders a right-side cart drawer with overlay
  * - Accessible close button and Escape key handling
  * - Clicking the backdrop closes the cart
+ * - Adds an accessible slider-style handle close control near the edge
  * - Optionally controlled via props: open, onClose (falls back to context)
  */
 // PUBLIC_INTERFACE
@@ -17,7 +18,7 @@ export default function CartSidebar({ open: controlledOpen, onClose: controlledO
 
   const panelRef = useRef(null);
 
-  // Trap initial focus into the panel when opened, and handle Escape
+  // Keyboard: Escape to close
   useEffect(() => {
     function onKey(e) {
       if (!open) return;
@@ -30,18 +31,23 @@ export default function CartSidebar({ open: controlledOpen, onClose: controlledO
     return () => document.removeEventListener('keydown', onKey);
   }, [open, onClose]);
 
+  // Move initial focus
   useEffect(() => {
     if (open && panelRef.current) {
-      // Move focus to the close button if available; else panel
-      const closeBtn = panelRef.current.querySelector('.cart-close-btn');
+      const closeBtn = panelRef.current.querySelector('.cart-close-btn, .cart-slider-handle');
       (closeBtn || panelRef.current).focus?.();
     }
   }, [open]);
 
-  if (!open) {
-    // Render nothing if closed to avoid focus issues
-    return null;
-  }
+  // Keyboard activation for handle via Enter/Space
+  const onHandleKeyDown = useCallback((e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onClose?.();
+    }
+  }, [onClose]);
+
+  if (!open) return null;
 
   return (
     <div className="cart-overlay" role="presentation" onMouseDown={onClose} aria-hidden={!open}>
@@ -54,6 +60,24 @@ export default function CartSidebar({ open: controlledOpen, onClose: controlledO
         ref={panelRef}
         tabIndex="-1"
       >
+        {/* Slider-style pill handle that slightly overlaps page content */}
+        <div
+          className="cart-slider-handle"
+          role="button"
+          tabIndex={0}
+          aria-label="Close cart"
+          title="Close cart"
+          onClick={onClose}
+          onKeyDown={onHandleKeyDown}
+        >
+          <span className="handle-drag" aria-hidden="true">
+            <span className="handle-dot" />
+            <span className="handle-dot" />
+            <span className="handle-dot" />
+          </span>
+          <span className="handle-icon" aria-hidden="true">×</span>
+        </div>
+
         <div className="cart-header" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <h3 className="m-0">Your Cart</h3>
           <button
