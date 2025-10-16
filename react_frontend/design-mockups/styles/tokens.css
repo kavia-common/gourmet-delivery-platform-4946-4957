@@ -1,0 +1,73 @@
+:root {
+  /* Ocean Professional color palette */
+  --color-primary: #2563EB;
+  --color-primary-600: #2563EB; /* base */
+  --color-primary-700: #1D4ED8; /* hover */
+  --color-primary-800: #1E40AF; /* pressed */
+  --color-secondary: #F59E0B;
+  --color-secondary-600: #F59E0B;
+  --color-secondary-700: #D97706;
+  --color-secondary-800: #B45309;
+  --color-bg: #F9FAFB;
+  --color-surface: #FFFFFF;
+  --color-text: #111827;
+  --color-muted: #6B7280;
+  --color-border: #E5E7EB;
+  --color-error: #EF4444;
+  --color-success: #10B981;
+  --color-info: #0EA5E9;
+  --shadow-color: rgba(17, 24, 39, 0.08);
+
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 6px 16px var(--shadow-color);
+  --shadow-lg: 0 12px 30px rgba(0,0,0,0.12);
+
+  /* Radii */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* Spacing scale (4px base) */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* Typography */
+  --font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji', 'Segoe UI Emoji';
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 22px;
+  --font-size-2xl: 28px;
+  --font-size-3xl: 36px;
+
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.7;
+
+  /* Focus ring */
+  --focus-ring: 0 0 0 3px rgba(37,99,235,0.18);
+
+  /* Gradient */
+  --gradient-soft: linear-gradient(135deg, rgba(37,99,235,0.06), rgba(17,24,39,0.02));
+
+  /* Breakpoints */
+  --bp-mobile: 640px;
+  --bp-desktop: 1024px;
+
+  /* Container widths */
+  --container-max: 1200px;
+  --container-pad: var(--space-4);
+}

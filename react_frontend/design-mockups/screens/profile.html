@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Profile & Orders — Gourmet Delivery (Mockups)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="../styles/tokens.css" rel="stylesheet" />
+  <link href="../styles/base.css" rel="stylesheet" />
+  <link href="../styles/components.css" rel="stylesheet" />
+  <link href="../styles/layouts.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Material+Symbols+Rounded" />
+</head>
+<body>
+  <header class="navbar" role="banner">
+    <div class="container inner">
+      <a class="brand" href="../index.html">
+        <img src="../assets/logo.svg" alt="" width="24" height="24" />
+        <span>Gourmet Delivery</span>
+      </a>
+      <nav>
+        <a class="btn btn-outline" href="./home.html">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" role="main">
+    <h1 class="mt-6" style="margin:0; font-size: var(--font-size-2xl);">Your profile</h1>
+
+    <div class="grid-12 mt-4">
+      <section class="col-span-12 md:col-span-5 lg:col-span-4" aria-labelledby="details-title">
+        <div class="surface p-4">
+          <h2 id="details-title" style="margin:0 0 8px; font-size: var(--font-size-xl);">Account details</h2>
+          <div class="field">
+            <label class="label" for="p-name">Name</label>
+            <input id="p-name" class="input" value="Jane Doe" />
+          </div>
+          <div class="field">
+            <label class="label" for="p-email">Email</label>
+            <input id="p-email" class="input" value="jane@example.com" />
+          </div>
+          <button class="btn btn-primary">Save</button>
+        </div>
+
+        <div class="surface p-4 mt-4">
+          <h2 style="margin:0 0 8px; font-size: var(--font-size-xl);">Preferences</h2>
+          <label class="control">
+            <input type="checkbox" class="switch-input" checked />
+            <span class="switch" aria-hidden="true"></span>
+            <span>Email notifications</span>
+          </label>
+          <label class="control">
+            <input type="checkbox" class="switch-input" />
+            <span class="switch" aria-hidden="true"></span>
+            <span>SMS updates</span>
+          </label>
+        </div>
+      </section>
+
+      <section class="col-span-12 md:col-span-7 lg:col-span-8" aria-labelledby="orders-title">
+        <div class="surface p-4">
+          <h2 id="orders-title" style="margin:0 0 8px; font-size: var(--font-size-xl);">Recent orders</h2>
+          <table class="table" role="table" aria-label="Orders table">
+            <thead>
+              <tr><th scope="col">Order</th><th scope="col">Restaurant</th><th scope="col">Total</th><th scope="col">Status</th><th scope="col">Action</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#GD-12345</td><td>Oceanic Sushi</td><td>$54.99</td><td><span class="badge">Delivered</span></td>
+                <td><a class="btn btn-tertiary" href="./order-tracking.html">Track</a></td>
+              </tr>
+              <tr>
+                <td>#GD-12346</td><td>Blue Harbor Grill</td><td>$38.50</td><td><span class="badge">Preparing</span></td>
+                <td><a class="btn btn-tertiary" href="./order-tracking.html">Track</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

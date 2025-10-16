@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Order Tracking — Gourmet Delivery (Mockups)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="../styles/tokens.css" rel="stylesheet" />
+  <link href="../styles/base.css" rel="stylesheet" />
+  <link href="../styles/components.css" rel="stylesheet" />
+  <link href="../styles/layouts.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Material+Symbols+Rounded" />
+</head>
+<body>
+  <header class="navbar" role="banner">
+    <div class="container inner">
+      <a class="brand" href="../index.html">
+        <img src="../assets/logo.svg" alt="" width="24" height="24" />
+        <span>Gourmet Delivery</span>
+      </a>
+      <nav>
+        <a class="btn btn-outline" href="./home.html">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" role="main">
+    <section class="surface p-4 mt-6">
+      <div class="flex items-center justify-between">
+        <h1 style="margin:0; font-size: var(--font-size-2xl);">Track your order</h1>
+        <span class="badge">Order #GD-12345</span>
+      </div>
+      <p class="muted mt-2">Estimated delivery in <strong id="eta">30</strong> minutes.</p>
+
+      <div class="progress mt-4" aria-label="Order progress">
+        <div class="bar" id="bar" style="width: 20%;"></div>
+      </div>
+
+      <ol class="mt-4" style="padding-left: 1.1rem;">
+        <li>Order received</li>
+        <li>Preparing</li>
+        <li>Out for delivery</li>
+        <li>Delivered</li>
+      </ol>
+
+      <div class="mt-4">
+        <button class="btn btn-tertiary" onclick="simulate()">Simulate progress</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    let pct = 20;
+    function simulate(){
+      pct = Math.min(100, pct + 20);
+      document.getElementById('bar').style.width = pct + '%';
+      const eta = Math.max(0, Math.round((100-pct)/2.5));
+      document.getElementById('eta').textContent = eta;
+    }
+  </script>
+</body>
+</html>

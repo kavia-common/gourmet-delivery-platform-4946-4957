@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Authentication — Gourmet Delivery (Mockups)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="../styles/tokens.css" rel="stylesheet" />
+  <link href="../styles/base.css" rel="stylesheet" />
+  <link href="../styles/components.css" rel="stylesheet" />
+  <link href="../styles/layouts.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Material+Symbols+Rounded" />
+</head>
+<body>
+  <header class="navbar" role="banner">
+    <div class="container inner">
+      <a class="brand" href="../index.html">
+        <img src="../assets/logo.svg" alt="" width="24" height="24" />
+        <span>Gourmet Delivery</span>
+      </a>
+      <nav>
+        <a class="btn btn-outline" href="./home.html">Home</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" role="main">
+    <section class="grid-12 mt-6">
+      <div class="col-span-12 md:col-span-6">
+        <div class="surface p-4">
+          <h2 style="margin:0 0 8px; font-size: var(--font-size-xl);">Login</h2>
+          <form>
+            <div class="field">
+              <label class="label" for="login-email">Email</label>
+              <input id="login-email" class="input" placeholder="you@example.com" type="email" />
+            </div>
+            <div class="field">
+              <label class="label" for="login-password">Password</label>
+              <input id="login-password" class="input" placeholder="••••••••" type="password" />
+              <span class="hint">Use at least 8 characters with letters and numbers.</span>
+            </div>
+            <div class="field">
+              <label class="control">
+                <input type="checkbox" class="switch-input" checked />
+                <span class="switch" aria-hidden="true"></span>
+                <span>Remember me</span>
+              </label>
+            </div>
+            <button type="button" class="btn btn-primary">Sign in</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-span-12 md:col-span-6">
+        <div class="surface p-4">
+          <h2 style="margin:0 0 8px; font-size: var(--font-size-xl);">Register</h2>
+          <form>
+            <div class="field">
+              <label class="label" for="reg-name">Name</label>
+              <input id="reg-name" class="input" placeholder="Jane Doe" />
+            </div>
+            <div class="field">
+              <label class="label" for="reg-email">Email</label>
+              <input id="reg-email" class="input" placeholder="you@example.com" type="email" />
+            </div>
+            <div class="field">
+              <label class="label" for="reg-password">Password</label>
+              <input id="reg-password" class="input" placeholder="At least 8 characters" type="password" />
+            </div>
+            <div class="field">
+              <label class="control">
+                <input type="checkbox" class="switch-input" checked />
+                <span class="switch" aria-hidden="true"></span>
+                <span>I agree to the Terms and Privacy Policy</span>
+              </label>
+            </div>
+            <button type="button" class="btn btn-secondary">Create account</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

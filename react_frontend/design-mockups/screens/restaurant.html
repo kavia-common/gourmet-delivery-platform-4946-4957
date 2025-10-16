@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Restaurant — Gourmet Delivery (Mockups)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="../styles/tokens.css" rel="stylesheet" />
+  <link href="../styles/base.css" rel="stylesheet" />
+  <link href="../styles/components.css" rel="stylesheet" />
+  <link href="../styles/layouts.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Material+Symbols+Rounded" />
+</head>
+<body>
+  <header class="navbar" role="banner">
+    <div class="container inner">
+      <a class="brand" href="../index.html">
+        <img src="../assets/logo.svg" alt="" width="24" height="24" />
+        <span>Gourmet Delivery</span>
+      </a>
+      <nav aria-label="Primary">
+        <div class="flex items-center gap-2">
+          <a class="btn btn-outline" href="./home.html">Browse</a>
+          <a class="btn btn-secondary" href="./cart-drawer.html">Cart</a>
+          <a class="btn btn-primary" href="./auth.html">Sign in</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" role="main">
+    <section class="mt-4 card-surface">
+      <img src="https://picsum.photos/seed/banner/1200/400" alt="Restaurant banner" style="border-radius: var(--radius-md) var(--radius-md) 0 0;">
+      <div class="p-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 style="margin:0; font-size: var(--font-size-2xl);">Oceanic Sushi</h1>
+            <p class="muted mt-2">Japanese • 25-35 min</p>
+          </div>
+          <div class="stars" aria-label="Rating 4.7 out of 5">
+            <span class="material-symbols-rounded star" aria-hidden="true">grade</span><strong>4.7</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-6">
+      <h2 style="font-size: var(--font-size-xl);">Menu</h2>
+      <div class="grid-12 mt-3" id="menu-grid" aria-live="polite"></div>
+
+      <template id="menu-item">
+        <article class="card-surface p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 style="margin:0; font-size: var(--font-size-lg);">Dish name</h3>
+              <p class="muted" style="margin:4px 0 0;">Short description</p>
+              <p style="margin:6px 0 0; font-weight: 700;">$12.50</p>
+            </div>
+            <button class="btn btn-primary">Add</button>
+          </div>
+        </article>
+      </template>
+    </section>
+  </main>
+
+  <script>
+    const menu = [
+      { name: 'Seared Tuna Bowl', desc: 'Sesame crust, avocado, sushi rice', price: 16.5 },
+      { name: 'Miso Glazed Salmon', desc: 'Citrus, brown rice, greens', price: 19.0 },
+      { name: 'Amber Curry', desc: 'Roasted vegetables, jasmine rice', price: 14.0 },
+      { name: 'Classic Udon', desc: 'Broth, scallion, mushroom', price: 12.0 },
+      { name: 'Tempura Mix', desc: 'Shrimp and veggies', price: 13.5 },
+      { name: 'Spicy Tuna Roll', desc: 'House-made chili', price: 9.5 }
+    ];
+    const grid = document.getElementById('menu-grid');
+    const tpl = document.getElementById('menu-item');
+    function colWrap(el){ const w=document.createElement('div'); w.className='col-span-12 md:col-span-6 lg:col-span-4'; w.appendChild(el); return w; }
+    menu.forEach(m => {
+      const node = tpl.content.cloneNode(true);
+      node.querySelector('h3').textContent = m.name;
+      node.querySelector('.muted').textContent = m.desc;
+      node.querySelector('p + p').textContent = `$${m.price.toFixed(2)}`;
+      grid.appendChild(colWrap(node.children[0]));
+    });
+  </script>
+</body>
+</html>

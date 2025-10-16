@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Gourmet Delivery — Design Mockups (Ocean Professional)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="./styles/tokens.css" rel="stylesheet" />
+    <link href="./styles/base.css" rel="stylesheet" />
+    <link href="./styles/components.css" rel="stylesheet" />
+    <link href="./styles/layouts.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Material+Symbols+Rounded:FILL,GRAD@0..1,0..200" />
+  </head>
+  <body>
+    <header class="dm-nav" role="banner" aria-label="Mockups Navigation">
+      <div class="dm-container">
+        <a class="brand" href="./index.html" aria-label="Home">
+          <img src="./assets/logo.svg" alt="" width="24" height="24" />
+          <span>Gourmet Delivery</span>
+        </a>
+        <nav aria-label="Primary">
+          <ul class="dm-links">
+            <li><a href="./screens/home.html">Home</a></li>
+            <li><a href="./screens/restaurant.html">Restaurant</a></li>
+            <li><a href="./screens/cart-drawer.html">Cart Drawer</a></li>
+            <li><a href="./screens/checkout.html">Checkout</a></li>
+            <li><a href="./screens/order-tracking.html">Order Tracking</a></li>
+            <li><a href="./screens/auth.html">Authentication</a></li>
+            <li><a href="./screens/profile.html">Profile & Orders</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="dm-container dm-main" role="main">
+      <section class="intro card">
+        <h1>Design Mockups</h1>
+        <p class="muted">Static HTML/CSS to mirror the Figma plan using the Ocean Professional theme.</p>
+        <ul class="key-points">
+          <li>Responsive grids: Desktop 12-col, Tablet 8-col, Mobile 4-col.</li>
+          <li>Design system tokens: colors, spacing, radius, shadows, typography.</li>
+          <li>Accessible landmarks, focus-visible, and min 44px tap targets.</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="screens-title">
+        <h2 id="screens-title" class="section-title">Screens</h2>
+        <div class="grid grid-3">
+          <a class="tile card" href="./screens/home.html" aria-label="Home screen">
+            <div class="tile-thumb" style="background-image:url('https://picsum.photos/seed/home/800/450');"></div>
+            <div class="tile-body">
+              <h3>Home</h3><p class="muted">Hero + restaurant grid</p>
+            </div>
+          </a>
+          <a class="tile card" href="./screens/restaurant.html" aria-label="Restaurant detail screen">
+            <div class="tile-thumb" style="background-image:url('https://picsum.photos/seed/restaurant/800/450');"></div>
+            <div class="tile-body">
+              <h3>Restaurant</h3><p class="muted">Menu list + add to cart</p>
+            </div>
+          </a>
+          <a class="tile card" href="./screens/cart-drawer.html" aria-label="Cart drawer overlay">
+            <div class="tile-thumb" style="background-image:url('https://picsum.photos/seed/cart/800/450');"></div>
+            <div class="tile-body">
+              <h3>Cart Drawer</h3><p class="muted">Slide-over interaction</p>
+            </div>
+          </a>
+          <a class="tile card" href="./screens/checkout.html" aria-label="Checkout screen">
+            <div class="tile-thumb" style="background-image:url('https://picsum.photos/seed/checkout/800/450');"></div>
+            <div class="tile-body">
+              <h3>Checkout</h3><p class="muted">Order summary + form</p>
+            </div>
+          </a>
+          <a class="tile card" href="./screens/order-tracking.html" aria-label="Order tracking screen">
+            <div class="tile-thumb" style="background-image:url('https://picsum.photos/seed/tracking/800/450');"></div>
+            <div class="tile-body">
+              <h3>Order Tracking</h3><p class="muted">Status & progress</p>
+            </div>
+          </a>
+          <a class="tile card" href="./screens/auth.html" aria-label="Authentication screen">
+            <div class="tile-thumb" style="background-image:url('https://picsum.photos/seed/auth/800/450');"></div>
+            <div class="tile-body">
+              <h3>Authentication</h3><p class="muted">Login & Register</p>
+            </div>
+          </a>
+          <a class="tile card" href="./screens/profile.html" aria-label="Profile & Orders screen">
+            <div class="tile-thumb" style="background-image:url('https://picsum.photos/seed/profile/800/450');"></div>
+            <div class="tile-body">
+              <h3>Profile & Orders</h3><p class="muted">Account details & history</p>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <section aria-labelledby="breakpoints-title">
+        <h2 id="breakpoints-title" class="section-title">Breakpoints</h2>
+        <ul class="key-points">
+          <li>Mobile: 0–639px (4 columns)</li>
+          <li>Tablet: 640–1023px (8 columns)</li>
+          <li>Desktop: ≥1024px (12 columns)</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer class="dm-footer" role="contentinfo">
+      <div class="dm-container">
+        <p class="muted">Ocean Professional • © Gourmet Delivery</p>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Home — Gourmet Delivery (Mockups)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="../styles/tokens.css" rel="stylesheet" />
+  <link href="../styles/base.css" rel="stylesheet" />
+  <link href="../styles/components.css" rel="stylesheet" />
+  <link href="../styles/layouts.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Material+Symbols+Rounded" />
+</head>
+<body>
+  <header class="navbar" role="banner">
+    <div class="container inner">
+      <a class="brand" href="../index.html">
+        <img src="../assets/logo.svg" alt="" width="24" height="24" />
+        <span>Gourmet Delivery</span>
+      </a>
+      <nav aria-label="Primary">
+        <div class="flex items-center gap-2">
+          <a class="btn btn-outline" href="./home.html">Browse</a>
+          <a class="btn btn-secondary" href="./cart-drawer.html" aria-label="Open cart overlay demo">Cart</a>
+          <a class="btn btn-primary" href="./auth.html">Sign in</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero" role="region" aria-label="Discover restaurants">
+    <div class="container hero-inner">
+      <span class="badge">Ocean Professional</span>
+      <h1 class="mt-2" style="font-size: var(--font-size-3xl); line-height: var(--line-height-tight); margin: 0;">Discover gourmet near you</h1>
+      <p class="muted mt-2" style="max-width: 56ch;">Browse top-rated restaurants and order with confidence. Clean, modern UI with subtle elevation and rounded corners.</p>
+
+      <form class="grid-12 mt-4" role="search" aria-label="Search restaurants">
+        <div class="col-span-12 md:col-span-6 lg:col-span-6">
+          <label class="label" for="search">Search</label>
+          <input id="search" class="input" placeholder="Search for sushi, pizza, salads..." />
+        </div>
+        <div class="col-span-12 md:col-span-3 lg:col-span-3">
+          <label class="label" for="cuisine">Cuisine</label>
+          <select id="cuisine" class="input">
+            <option>All</option><option>Japanese</option><option>Seafood</option><option>Italian</option><option>Indian</option>
+          </select>
+        </div>
+        <div class="col-span-12 md:col-span-3 lg:col-span-3" style="display:flex; align-items:flex-end;">
+          <button type="button" class="btn btn-primary" style="width: 100%;">Explore</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <main class="container" role="main">
+    <h2 class="mt-6" style="font-size: var(--font-size-xl);">Popular Restaurants</h2>
+
+    <div class="grid-12 mt-4" id="restaurant-grid" aria-live="polite"></div>
+
+    <template id="restaurant-card">
+      <article class="card-surface" style="overflow:hidden;">
+        <div style="position:relative; aspect-ratio:16/9; overflow:hidden;">
+          <img alt="" />
+          <div class="badge" style="position:absolute; left:12px; top:12px;">30-40 min</div>
+        </div>
+        <div class="p-4">
+          <div class="flex items-center justify-between">
+            <h3 style="margin:0; font-size: var(--font-size-lg);"></h3>
+            <div class="stars" aria-label="Rating"><span class="material-symbols-rounded star" aria-hidden="true">grade</span><span class="rating">4.7</span></div>
+          </div>
+          <p class="muted" style="margin:4px 0 0;">Cuisine</p>
+          <div class="mt-3">
+            <a class="btn btn-outline" href="./restaurant.html">View menu</a>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <script>
+      // Mock data inline
+      const data = [
+        { name: 'Oceanic Sushi', cuisine: 'Japanese', rating: 4.7, eta: '25-35', image: 'https://picsum.photos/seed/sushi/800/450' },
+        { name: 'Blue Harbor Grill', cuisine: 'Seafood', rating: 4.5, eta: '30-40', image: 'https://picsum.photos/seed/seafood/800/450' },
+        { name: 'Amber Spice Kitchen', cuisine: 'Indian', rating: 4.6, eta: '20-30', image: 'https://picsum.photos/seed/indian/800/450' },
+        { name: 'Napoli Oven', cuisine: 'Italian', rating: 4.8, eta: '30-35', image: 'https://picsum.photos/seed/italian/800/450' },
+        { name: 'Green Garden', cuisine: 'Salads', rating: 4.4, eta: '15-25', image: 'https://picsum.photos/seed/salad/800/450' },
+        { name: 'Bento Bay', cuisine: 'Japanese', rating: 4.3, eta: '25-30', image: 'https://picsum.photos/seed/bento/800/450' }
+      ];
+      const grid = document.getElementById('restaurant-grid');
+      const tpl = document.getElementById('restaurant-card');
+      function colWrapper(el) {
+        const wrap = document.createElement('div');
+        wrap.className = 'col-span-12 md:col-span-4 lg:col-span-3';
+        wrap.appendChild(el);
+        return wrap;
+      }
+      data.forEach(r => {
+        const node = tpl.content.cloneNode(true);
+        const img = node.querySelector('img');
+        const title = node.querySelector('h3');
+        const cuisine = node.querySelector('.muted');
+        const rating = node.querySelector('.rating');
+        img.src = r.image; img.alt = `${r.name} cover`;
+        title.textContent = r.name;
+        cuisine.textContent = `${r.cuisine} • ${r.eta} min`;
+        rating.textContent = r.rating.toFixed(1);
+        grid.appendChild(colWrapper(node.children[0]));
+      });
+    </script>
+  </main>
+
+  <footer class="container mt-6" role="contentinfo">
+    <p class="muted">© Gourmet Delivery</p>
+  </footer>
+</body>
+</html>
