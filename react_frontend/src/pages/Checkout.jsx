@@ -12,10 +12,27 @@ export default function Checkout() {
 
   const placeOrder = async () => {
     setPlacing(true);
-    const res = await Api.createOrder({ items, subtotal, deliveryFee, total }, token);
-    setStatus(res);
-    clear();
-    setPlacing(false);
+    try {
+      // Attempt to include restaurantId if items share a restaurant context (optional)
+      const restaurantId = items.length > 0 ? items[0].restaurantId || items[0].rid || null : null;
+      const payload = {
+        restaurantId: restaurantId || undefined,
+        items: items.map(i => ({
+          id: i.id,
+          qty: i.qty,
+          price: i.price,
+          name: i.name
+        })),
+        subtotal,
+        deliveryFee,
+        total
+      };
+      const res = await Api.createOrder(payload, token);
+      setStatus(res);
+      clear();
+    } finally {
+      setPlacing(false);
+    }
   };
 
   return (

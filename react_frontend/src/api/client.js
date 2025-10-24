@@ -1,8 +1,11 @@
-const BASE_URL = 'http://localhost:3001';
+const BASE_URL = process.env.REACT_APP_API_BASE || '';
 
+/**
+ * Build default headers for API requests and include auth token when provided.
+ */
 function buildHeaders(token) {
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   };
   if (token) headers['Authorization'] = `Bearer ${token}`;
   return headers;
@@ -18,7 +21,7 @@ function normalizeRestaurant(raw) {
   if (!raw || typeof raw !== 'object') return raw;
   const id = raw.id || raw._id || raw.restaurantId || raw.slug || String(raw?.name || '');
   // try to coerce eta to a plain number or "x-y" string as the UI prints "min" separately
-  let eta = raw.eta;
+  let eta = raw.eta ?? raw.estimatedTime ?? raw.estimatedMinutes;
   if (typeof eta === 'string' && eta.toLowerCase().includes('min')) {
     eta = eta.replace(/min/ig, '').trim();
   }
@@ -67,13 +70,22 @@ async function fetchRestaurantWithMenu(id, token) {
   return { data: restaurant, error: null };
 }
 
+/**
+ * Construct a fully-qualified URL for API paths, ensuring single slash.
+ */
+function buildUrl(path) {
+  const base = BASE_URL.replace(/\/+$/, '');
+  const p = String(path || '').startsWith('/') ? path : `/${path || ''}`;
+  return `${base}${p}`;
+}
+
 // PUBLIC_INTERFACE
 export async function apiGet(path, token) {
   /** Fetch JSON via GET; returns { data, error } */
   try {
-    const res = await fetch(`${BASE_URL}${path}`, { headers: buildHeaders(token) });
+    const res = await fetch(buildUrl(path), { headers: buildHeaders(token) });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) return { data: null, error: data?.message || res.statusText };
+    if (!res.ok) return { data: null, error: data?.message || res.statusText || 'Request failed' };
     return { data, error: null };
   } catch (e) {
     return { data: null, error: e.message || 'Network error' };
@@ -84,13 +96,13 @@ export async function apiGet(path, token) {
 export async function apiPost(path, body, token) {
   /** POST JSON; returns { data, error } */
   try {
-    const res = await fetch(`${BASE_URL}${path}`, {
+    const res = await fetch(buildUrl(path), {
       method: 'POST',
       headers: buildHeaders(token),
       body: JSON.stringify(body || {})
     });
     const data = await res.json().catch(() => ({}));
-    if (!res.ok) return { data: null, error: data?.message || res.statusText };
+    if (!res.ok) return { data: null, error: data?.message || res.statusText || 'Request failed' };
     return { data, error: null };
   } catch (e) {
     return { data: null, error: e.message || 'Network error' };
@@ -112,6 +124,7 @@ export const Api = {
     // normalize list to ensure id instead of _id
     return data.map(normalizeRestaurant);
   },
+
   async getRestaurant(id, token) {
     // Try to fetch restaurant and ensure menu exists, with minimal coupling
     const { data, error } = await fetchRestaurantWithMenu(id, token);
@@ -128,6 +141,7 @@ export const Api = {
     }
     return data;
   },
+
   async login({ email, password }) {
     const { data, error } = await apiPost('/auth/login', { email, password });
     if (error || !data?.token) {
@@ -136,6 +150,15 @@ export const Api = {
     }
     return data;
   },
+
+  // PUBLIC_INTERFACE
+  async register({ name, email, password }) {
+    /** Register a new user via POST /auth/register; returns { success: true } or error */
+    const { data, error } = await apiPost('/auth/register', { name, email, password });
+    if (error) return { success: false, error };
+    return { success: true, data };
+  },
+
   async createOrder(order, token) {
     // Try to map common order shape expected by backend: { restaurantId, items: [{menuItemId, quantity}] }
     // If the caller passes UI cart shape, keep it as-is for compatibility (backend may accept flexible payload).
@@ -158,6 +181,17 @@ export const Api = {
     if (error) {
       // Mock success
       return { orderId: `demo-${Date.now()}`, status: 'received', etaMinutes: 30 };
+    }
+    return data;
+  },
+
+  // PUBLIC_INTERFACE
+  async getOrderStatus(id, token) {
+    /** Get order status via GET /orders/:id/status */
+    const { data, error } = await apiGet(`/orders/${encodeURIComponent(id)}/status`, token);
+    if (error) {
+      // Graceful fallback
+      return { orderId: id, status: 'received', etaMinutes: 30, error };
     }
     return data;
   }

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { apiPost } from '../../api/client';
+import { Api } from '../../api/client';
 import { useAuth } from '../../context/AuthContext';
 
 // PUBLIC_INTERFACE
@@ -77,13 +77,10 @@ export default function RegisterModal({ open, onClose }) {
     setSubmitting(true);
     setError(null);
     try {
-      // Keep backend API unchanged: POST /auth/register then auto-login using /auth/login or mock
-      const { data, error } = await apiPost('/auth/register', { name, email, password });
-      if (error) {
-        // If backend not available, fall back to mock flow by logging in directly
-        // Attempt login (Api.login internally mocks if backend fails)
-        // We import lazily to avoid circulars
-        const { Api } = await import('../../api/client');
+      // Attempt real registration first
+      const reg = await Api.register({ name, email, password });
+      if (!reg.success) {
+        // Backend not ready or failed – proceed to login which has built-in mock fallback
         const res = await Api.login({ email, password });
         if (res?.token) {
           doLogin(res.token, res.user || { email, name }, true);
@@ -91,11 +88,10 @@ export default function RegisterModal({ open, onClose }) {
           onClose?.();
           completePostLoginRedirect(redirectTo);
         } else {
-          setError(error || 'Registration failed');
+          setError(reg.error || 'Registration failed');
         }
       } else {
-        // If register succeeded, try to login
-        const { Api } = await import('../../api/client');
+        // Registration ok; login to get token
         const res = await Api.login({ email, password });
         if (res?.token) {
           doLogin(res.token, res.user || { email, name }, true);
